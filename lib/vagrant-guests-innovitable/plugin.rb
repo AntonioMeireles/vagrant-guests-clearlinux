@@ -1,30 +1,30 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
 
 require 'vagrant'
 
 module VagrantPlugins
-  module GuestPhoton
+  module GuestInnovitable
     class Plugin < Vagrant.plugin('2')
-      name 'VMware Photon guest'
-      description 'VMware Photon guest support.'
+      name 'Innovitable guest'
+      description 'Innovitable guest support.'
 
-      guest('photon', 'linux') do
+      guest('innovitable', 'linux') do
         require_relative 'guest'
         Guest
       end
 
-      guest_capability('photon', 'change_host_name') do
+      guest_capability('innovitable', 'change_host_name') do
         require_relative 'cap/change_host_name'
         Cap::ChangeHostName
       end
 
-      guest_capability('photon', 'configure_networks') do
+      guest_capability('innovitable', 'configure_networks') do
         require_relative 'cap/configure_networks'
         Cap::ConfigureNetworks
       end
 
-      guest_capability('photon', 'docker_daemon_running') do
+      guest_capability('innovitable', 'docker_daemon_running') do
         require_relative 'cap/docker'
         Cap::Docker
       end

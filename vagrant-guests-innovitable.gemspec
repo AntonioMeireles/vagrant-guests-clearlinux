@@ -1,24 +1,24 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
 $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
-require 'vagrant-guests-photon/version'
+require 'vagrant-guests-innovitable/version'
 
 Gem::Specification.new do |s|
-  s.name = 'vagrant-guests-photon'
-  s.version = VagrantPlugins::GuestPhoton::VERSION
+  s.name = 'vagrant-guests-innovitable'
+  s.version = VagrantPlugins::GuestInnovitable::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = 'Fabio Rapposelli'
-  s.email = 'fabio@vmware.com'
-  s.homepage = 'https://github.com/vmware/vagrant-guests-photon'
+  s.authors = 'Alex Sorkin'
+  s.email = 'alexander.sorkin@gmail.com'
+  s.homepage = 'https://github.com/alexsorkin/vagrant-guests-innovitable'
   s.license = 'APL2'
-  s.summary = 'VMware Photon Guest Plugin for Vagrant'
-  s.description = 'Enables Vagrant to manage VMware Photon machines.'
+  s.summary = 'Innovitable Guest Plugin for Vagrant'
+  s.description = 'Enables Vagrant to manage Innovitable machines.'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec-core', '~> 2.14'
-  s.add_development_dependency 'rspec-expectations', '~> 2.14'
-  s.add_development_dependency 'rspec-mocks', '~> 2.14'
+  s.add_development_dependency 'rspec-core', '~> 3.5.4'
+  s.add_development_dependency 'rspec-expectations', '~> 3.5.0'
+  s.add_development_dependency 'rspec-mocks', '~> 3.5.0'
   s.add_development_dependency 'rubocop'
 
   s.files = `git ls-files`.split($RS)

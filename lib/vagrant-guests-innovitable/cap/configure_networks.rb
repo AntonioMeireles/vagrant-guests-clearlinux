@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
 
 require 'tempfile'
 require 'ipaddr'
@@ -29,10 +29,10 @@ DHCP=yes
 EOF
 
 module VagrantPlugins
-  module GuestPhoton
+  module GuestInnovitable
     module Cap
       class ConfigureNetworks
-        @@logger = Log4r::Logger.new("vagrant::guest::photon::configure_networks")
+        @@logger = Log4r::Logger.new("vagrant::guest::innovitable::configure_networks")
 
         def self.configure_networks(machine, networks)
           machine.communicate.tap do |comm|
@@ -84,7 +84,7 @@ module VagrantPlugins
            puts result
            return File.basename(result.strip)
          end
-	 return "50-vagrant-%s.network" % [iface]
+         return "50-vagrant-%s.network" % [iface]
         end
       end
     end

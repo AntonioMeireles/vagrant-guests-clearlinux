@@ -1,10 +1,10 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
 
-require 'vagrant-guests-photon/cap/configure_networks'
+require 'vagrant-guests-innovitable/cap/configure_networks'
 require 'spec_helper'
 
-describe VagrantPlugins::GuestPhoton::Cap::ConfigureNetworks do
+describe VagrantPlugins::GuestInnovitable::Cap::ConfigureNetworks do
   include_context 'machine'
 
   context 'configure 4 kinds of networks' do

@@ -1,5 +1,6 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
+
 require 'coveralls'
 Coveralls.wear!
 

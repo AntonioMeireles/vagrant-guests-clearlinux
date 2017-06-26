@@ -1,10 +1,10 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
 
-require 'vagrant-guests-photon/cap/docker'
+require 'vagrant-guests-innovitable/cap/docker'
 require 'spec_helper'
 
-describe VagrantPlugins::GuestPhoton::Cap::Docker do
+describe VagrantPlugins::GuestInnovitable::Cap::Docker do
   include_context 'machine'
 
   it 'should check docker' do

@@ -1,25 +1,24 @@
 # encoding: UTF-8
-# Copyright (c) 2015 VMware, Inc. All Rights Reserved.
+# Copyright (c) 2017 Innovitable. All Rights Reserved.
 
 require 'spec_helper'
-require 'vagrant-guests-photon/plugin'
-require 'vagrant-guests-photon/cap/change_host_name'
-require 'vagrant-guests-photon/cap/configure_networks'
-require 'vagrant-guests-photon/cap/docker'
+require 'vagrant-guests-innovitable/plugin'
+require 'vagrant-guests-innovitable/cap/change_host_name'
+require 'vagrant-guests-innovitable/cap/configure_networks'
+require 'vagrant-guests-innovitable/cap/docker'
 
-describe VagrantPlugins::GuestPhoton::Plugin do
-  it 'should be loaded with photon' do
-    expect(described_class.components.guests[:photon].first).to eq(VagrantPlugins::GuestPhoton::Guest)
+describe VagrantPlugins::GuestInnovitable::Plugin do
+  it 'should be loaded with innovtibale' do
+    expect(described_class.components.guests[:innovitable].first).to eq(VagrantPlugins::GuestInnovitable::Guest)
   end
 
   {
-    :docker_daemon_running => VagrantPlugins::GuestPhoton::Cap::Docker,
-    :change_host_name      => VagrantPlugins::GuestPhoton::Cap::ChangeHostName,
-    :configure_networks    => VagrantPlugins::GuestPhoton::Cap::ConfigureNetworks
+    :docker_daemon_running => VagrantPlugins::GuestInnovitable::Cap::Docker,
+    :change_host_name      => VagrantPlugins::GuestInnovitable::Cap::ChangeHostName,
+    :configure_networks    => VagrantPlugins::GuestInnovitable::Cap::ConfigureNetworks
   }.each do |cap, cls|
-    it "should be capable of #{cap} with photon" do
-      expect(described_class.components.guest_capabilities[:photon][cap])
-        .to eq(cls)
+    it "should be capable of #{cap} with innovitable" do
+      expect(described_class.components.guest_capabilities[:innovitable][cap]).to eq(cls)
     end
   end
 end
