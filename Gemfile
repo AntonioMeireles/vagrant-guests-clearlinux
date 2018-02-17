@@ -1,8 +1,8 @@
-# Copyright (c) 2017 Innovitable. All Rights Reserved.
+# Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in vagrant-guests-innovitable.gemspec
+# Specify your gem's dependencies in vagrant-guests-clearlinux.gemspec
 gemspec
 
 group :development do

@@ -4,8 +4,8 @@ MethodLength:
   CountComments: false  # count full line comments?
   Enabled: false
 
-MethodName:
-  EnforcedStyle: snake_case
+# MethodName:
+#   EnforcedStyle: snake_case
 
 AccessorMethodName:
   Description: Check the naming of accessor methods for get_/set_.

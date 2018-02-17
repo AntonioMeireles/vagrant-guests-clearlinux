@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Copyright (c) 2017 Innovitable. All Rights Reserved.
+# Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 require 'rubygems'
 require 'bundler/setup'

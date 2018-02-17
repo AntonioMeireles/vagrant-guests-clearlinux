@@ -1,10 +1,10 @@
 # encoding: UTF-8
-# Copyright (c) 2017 Innovitable. All Rights Reserved.
+# Copyright (c) 2018 António Meireles. All Rights Reserved.
 
-require 'vagrant-guests-innovitable/cap/configure_networks'
+require 'vagrant-guests-ClearLinux/cap/configure_networks'
 require 'spec_helper'
 
-describe VagrantPlugins::GuestInnovitable::Cap::ConfigureNetworks do
+describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
   include_context 'machine'
 
   context 'configure 4 kinds of networks' do

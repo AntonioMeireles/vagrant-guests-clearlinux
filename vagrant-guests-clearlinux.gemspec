@@ -1,18 +1,18 @@
 # encoding: UTF-8
-# Copyright (c) 2017 Innovitable. All Rights Reserved.
+# Copyright (c) 2018 António Meireles. All Rights Reserved.
 $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
-require 'vagrant-guests-innovitable/version'
+require 'vagrant-guests-clearlinux/version'
 
 Gem::Specification.new do |s|
-  s.name = 'vagrant-guests-innovitable'
-  s.version = VagrantPlugins::GuestInnovitable::VERSION
+  s.name = 'vagrant-guests-clearlinux'
+  s.version = VagrantPlugins::GuestClearLinux::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = 'Alex Sorkin'
-  s.email = 'alexander.sorkin@gmail.com'
-  s.homepage = 'https://github.com/alexsorkin/vagrant-guests-innovitable'
+  s.authors = 'António Meireles'
+  s.email = 'antonio.meireles@reformi.st'
+  s.homepage = 'https://github.com/AntonioMeireles/vagrant-guests-clearlinux'
   s.license = 'APL2'
-  s.summary = 'Innovitable Guest Plugin for Vagrant'
-  s.description = 'Enables Vagrant to manage Innovitable machines.'
+  s.summary = 'Clear Linux Guest Plugin for Vagrant'
+  s.description = 'Enables Vagrant to manage Clear Linux guersts.'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
