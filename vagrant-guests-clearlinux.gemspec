@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/AntonioMeireles/vagrant-guests-clearlinux'
   s.license = 'APL2'
   s.summary = 'Clear Linux Guest Plugin for Vagrant'
-  s.description = 'Enables Vagrant to manage Clear Linux guersts.'
+  s.description = 'Enables Vagrant to manage Clear Linux guests.'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
