@@ -82,7 +82,7 @@ module VagrantPlugins
             end
 
             comm.sudo('systemctl daemon-reload')
-            comm.sudo('systemctl restart systemd-networkd &')
+            comm.sudo('systemctl restart systemd-networkd')
           end
         end
 
