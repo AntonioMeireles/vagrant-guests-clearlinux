@@ -17,7 +17,7 @@ To build and install the plugin directly from this repo:
 ```
 $ bundle install
 $ bundle exec rake build
-$ vagrant plugin install pkg/vagrant-guests-clearlinux-1.0.7.gem
+$ vagrant plugin install pkg/vagrant-guests-clearlinux-1.0.8.gem
 ```
 
 You can run RSpec with:
