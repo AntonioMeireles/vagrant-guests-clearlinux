@@ -45,7 +45,7 @@ module VagrantPlugins
 
             # Read network interface names
             interfaces = []
-            comm.sudo("ifconfig -a | grep -E '^ens|^eth' | cut -f1 -d' '") do |_, result|
+            comm.sudo("ifconfig -a | grep -E '^en|^eth' | cut -f1 -d' '") do |_, result|
               interfaces = result.split("\n")
             end
 
@@ -80,9 +80,7 @@ module VagrantPlugins
               comm.sudo("chown root:root /etc/systemd/network/#{unit_name}")
               comm.sudo("chmod a+r /etc/systemd/network/#{unit_name}")
             end
-
-            comm.sudo('systemctl daemon-reload')
-            comm.sudo('systemctl restart systemd-networkd')
+            comm.sudo('systemctl daemon-reload && systemctl restart systemd-networkd')
           end
         end
 
