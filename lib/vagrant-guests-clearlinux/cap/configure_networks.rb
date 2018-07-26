@@ -41,47 +41,46 @@ module VagrantPlugins
         @@logger = Log4r::Logger.new('vagrant::guest::clearlinux::configure_networks')
 
         def self.configure_networks(machine, networks)
-          machine.communicate.tap do |comm|
-
-            # Read network interface names
-            interfaces = []
-            comm.sudo("ifconfig -a | grep -E '^en|^eth' | cut -f1 -d' '") do |_, result|
-              interfaces = result.split("\n")
-            end
-
-            # Configure interfaces
-            networks.each do |network|
-              interface = network[:interface].to_i
-
-              iface = interfaces[interface]
-              if iface.nil?
-                @@logger.warn("Could not find match rule for network #{network.inspect}")
-                next
-              end
-              comm.sudo("mkdir -p /etc/systemd/network/")
-              unit_name = find_network_file comm, iface
-              comm.sudo("rm -f /etc/systemd/network/#{unit_name}")
-
-              if network[:type] == :static
-                cidr = IPAddr.new(network[:netmask]).to_cidr
-                address = format('%s/%s', network[:ip], cidr)
-                unit_file = format(STATIC_NETWORK, iface, address)
-              elsif network[:type] == :dhcp
-                unit_file = format(DHCP_NETWORK, iface)
-              end
-
-              temp = Tempfile.new('vagrant')
-              temp.binmode
-              temp.write(unit_file)
-              temp.close
-
-              comm.upload(temp.path, "/tmp/#{unit_name}")
-              comm.sudo("mv /tmp/#{unit_name} /etc/systemd/network/")
-              comm.sudo("chown root:root /etc/systemd/network/#{unit_name}")
-              comm.sudo("chmod a+r /etc/systemd/network/#{unit_name}")
-            end
-            comm.sudo('systemctl restart systemd-networkd')
+          comm = machine.communicate
+          # Read network interface names
+          interfaces = []
+          comm.sudo("ifconfig -a | grep -E '^en|^eth' | cut -f1 -d' '") do |_, result|
+            interfaces = result.split("\n")
           end
+
+          # Configure interfaces
+          networks.each do |network|
+            interface = network[:interface].to_i
+
+            iface = interfaces[interface]
+            if iface.nil?
+              @@logger.warn("Could not find match rule for network #{network.inspect}")
+              next
+            end
+            comm.sudo("mkdir -p /etc/systemd/network/")
+            unit_name = find_network_file comm, iface
+            comm.sudo("rm -f /etc/systemd/network/#{unit_name}")
+
+            if network[:type] == :static
+              cidr = IPAddr.new(network[:netmask]).to_cidr
+              address = format('%s/%s', network[:ip], cidr)
+              unit_file = format(STATIC_NETWORK, iface, address)
+            elsif network[:type] == :dhcp
+              unit_file = format(DHCP_NETWORK, iface)
+            end
+
+            temp = Tempfile.new('vagrant')
+            temp.binmode
+            temp.write(unit_file)
+            temp.close
+
+            comm.upload(temp.path, "/tmp/#{unit_name}")
+            comm.sudo(["mv /tmp/#{unit_name} /etc/systemd/network/",
+              "chown root:root /etc/systemd/network/#{unit_name}",
+              "chmod a+r /etc/systemd/network/#{unit_name}"].join("\n"))
+          end
+          comm.sudo("systemctl restart systemd-networkd")
+          comm.wait_for_ready(30)
         end
 
         def self.find_network_file(comm, iface)
