@@ -80,7 +80,7 @@ module VagrantPlugins
               comm.sudo("chown root:root /etc/systemd/network/#{unit_name}")
               comm.sudo("chmod a+r /etc/systemd/network/#{unit_name}")
             end
-            comm.sudo('systemctl daemon-reload && systemctl restart systemd-networkd')
+            comm.sudo('systemctl restart systemd-networkd')
           end
         end
 
