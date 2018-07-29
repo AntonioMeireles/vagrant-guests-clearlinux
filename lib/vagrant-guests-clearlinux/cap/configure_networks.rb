@@ -20,6 +20,7 @@ Name=%s
 
 [Network]
 Address=%s
+%s
 #VAGRANT-END
 EOF
 
@@ -38,35 +39,31 @@ module VagrantPlugins
   module GuestClearLinux
     module Cap
       class ConfigureNetworks
+        include Vagrant::Util
+        extend Vagrant::Util::GuestInspection::Linux
+        NETWORKD_DIRECTORY = "/etc/systemd/network".freeze
         @@logger = Log4r::Logger.new('vagrant::guest::clearlinux::configure_networks')
 
         def self.configure_networks(machine, networks)
           comm = machine.communicate
-          # Read network interface names
-          interfaces = []
-          comm.sudo("ifconfig -a | grep -E '^en|^eth' | cut -f1 -d' '") do |_, result|
-            interfaces = result.split("\n")
-          end
-
-          # Configure interfaces
+          interfaces = machine.guest.capability(:network_interfaces)
           networks.each do |network|
             interface = network[:interface].to_i
-
-            iface = interfaces[interface]
-            if iface.nil?
+            device = interfaces[interface]
+            if device.nil?
               @@logger.warn("Could not find match rule for network #{network.inspect}")
               next
             end
-            comm.sudo("mkdir -p /etc/systemd/network/")
-            unit_name = find_network_file comm, iface
-            comm.sudo("rm -f /etc/systemd/network/#{unit_name}")
+            unit_name = format('50-vagrant-%s.network', device)
 
             if network[:type] == :static
               cidr = IPAddr.new(network[:netmask]).to_cidr
-              address = format('%s/%s', network[:ip], cidr)
-              unit_file = format(STATIC_NETWORK, iface, address)
+              address = "#{network[:ip]}/#{cidr}"
+              gateway = ""
+              gateway = "Gateway=#{network[:gateway]}" if network[:gateway]
+              unit_file = format(STATIC_NETWORK, device, address, gateway)
             elsif network[:type] == :dhcp
-              unit_file = format(DHCP_NETWORK, iface)
+              unit_file = format(DHCP_NETWORK, device)
             end
 
             temp = Tempfile.new('vagrant')
@@ -75,16 +72,14 @@ module VagrantPlugins
             temp.close
 
             comm.upload(temp.path, "/tmp/#{unit_name}")
-            comm.sudo(["mv /tmp/#{unit_name} /etc/systemd/network/",
-              "chown root:root /etc/systemd/network/#{unit_name}",
-              "chmod a+r /etc/systemd/network/#{unit_name}"].join("\n"))
+            comm.sudo([ "mkdir -p #{NETWORKD_DIRECTORY}",
+              "rm -f #{NETWORKD_DIRECTORY}/#{unit_name}",
+              "mv /tmp/#{unit_name} #{NETWORKD_DIRECTORY}",
+              "chown root:root #{NETWORKD_DIRECTORY}/#{unit_name}",
+              "chmod a+r #{NETWORKD_DIRECTORY}/#{unit_name}",
+              "systemctl restart systemd-networkd"].join("\n"))
+            comm.wait_for_ready(30)
           end
-          comm.sudo("systemctl restart systemd-networkd")
-          comm.wait_for_ready(30)
-        end
-
-        def self.find_network_file(comm, iface)
-          format('50-vagrant-%s.network', iface)
         end
       end
     end
