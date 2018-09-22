@@ -8,7 +8,7 @@ require 'vagrant-guests-clearlinux/cap/configure_networks'
 
 describe VagrantPlugins::GuestClearLinux::Plugin do
   it 'should be loaded with ClearLinux' do
-    expect(described_class.components.guests[:clearlinux].first).to eq(VagrantPlugins::GuestClearlinux::Guest)
+    expect(described_class.components.guests[:clearlinux].first).to eq(VagrantPlugins::GuestClearLinux::Guest)
   end
 
   {

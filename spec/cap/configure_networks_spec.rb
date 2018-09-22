@@ -149,7 +149,7 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
     before do
       communicate.stub(:sudo).with("ifconfig -a | grep -E '^enp|^eth' | cut -f1 -d' '")
         .and_yield(nil, interfaces)
-      @@logger = Log4r::Logger.new("vagrant::guest::photon::configure_networks")
+      @@logger = Log4r::Logger.new("vagrant::guest::clearlinux::configure_networks")
     end
 
     it 'should configure networks without enp0s9' do
