@@ -33,6 +33,16 @@ module VagrantPlugins
         require_relative 'cap/nfs_client'
         Cap::NFS
       end
+
+      guest_capability(:clearlinux, :rsync_install) do
+        require_relative "cap/rsync"
+        Cap::RSync
+      end
+
+      guest_capability(:clearlinux, :rsync_installed) do
+        require_relative "cap/rsync"
+        Cap::RSync
+      end
     end
   end
 end
