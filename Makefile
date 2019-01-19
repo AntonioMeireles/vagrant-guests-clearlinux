@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: check-version help
+.PHONY: check-version help push local-install
 
 PLUGIN := vagrant-guests-clearlinux
 
@@ -19,12 +19,14 @@ ifndef VERSION
 endif
 
 build: ## builds gem inside a docker container
-	docker run -it --rm --name gem-builder -v "$PWD":/usr/src/myapp \
+	docker run -it --rm --name gem-builder -v "$${PWD}":/usr/src/myapp \
 		-w /usr/src/myapp ruby:2.5 bash -c "bundle install; bundle exec rake build"
 
-push: check-version pkg/$(PLUGIN)-${VERSION}.gem ## pushs gem to rubygems.org
+push: pkg/$(PLUGIN)-${VERSION}.gem ## pushes gem to rubygems.org
 	gem push pkg/$(PLUGIN)-${VERSION}.gem
 
-local-install: build check-version ## installs plugin locally for testing
+pkg/$(PLUGIN)-${VERSION}.gem: check-version build
+
+local-install: pkg/$(PLUGIN)-${VERSION}.gem ## installs plugin locally for testing
 	vagrant plugin uninstall $(PLUGIN)
 	vagrant plugin install pkg/$(PLUGIN)-${VERSION}.gem
