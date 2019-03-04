@@ -9,6 +9,25 @@ module VagrantPlugins
       name 'Clear Linux guest'
       description 'Clear Linux guest support.'
 
+      config(:bundle_add, :provisioner) do
+        require_relative 'provisioner'
+        BundlesConfig
+      end
+      config(:bundle_remove, :provisioner) do
+        require_relative 'provisioner'
+        BundlesConfig
+      end
+
+      provisioner(:bundle_add) do
+        require_relative 'provisioner'
+        BundleAddProvisioner
+      end
+
+      provisioner(:bundle_remove) do
+        require_relative 'provisioner'
+        BundleRemoveProvisioner
+      end
+
       guest('clearlinux', 'linux') do
         require_relative 'guest'
         Guest
