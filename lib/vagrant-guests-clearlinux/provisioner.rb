@@ -29,9 +29,19 @@ module VagrantPlugins
     class BundleAddProvisioner < Vagrant.plugin('2', :provisioner)
       def provision
         @config.bundles.each do | item |
-          @machine.ui.info("installing '#{item}' bundle")
+          @machine.ui.detail("installing '#{item}' bundle")
           @machine.communicate.sudo("swupd bundle-add '#{item}'") do |type, data|
-            @machine.env.ui.info(data.chomp, prefix: false)
+            if [:stderr, :stdout].include?(type)
+              color = type == :stdout ? :green : :red
+
+              data = data.chomp
+              return if data.empty?
+
+              options = {}
+              options[:color] = color
+
+              @machine.ui.detail(data.chomp, options)
+            end
           end
         end
       end
@@ -41,9 +51,19 @@ module VagrantPlugins
 
       def provision
         @config.bundles.each do | item |
-          @machine.ui.info("removing '#{item}' bundle")
+          @machine.ui.detail("removing '#{item}' bundle")
           @machine.communicate.sudo("swupd bundle-remove '#{item}'") do |type, data|
-            @machine.env.ui.info(data.chomp, prefix: false)
+            if [:stderr, :stdout].include?(type)
+              color = type == :stdout ? :green : :red
+
+              data = data.chomp
+              return if data.empty?
+
+              options = {}
+              options[:color] = color
+
+              @machine.ui.detail(data.chomp, options)
+            end
           end
         end
       end
