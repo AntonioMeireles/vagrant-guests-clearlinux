@@ -1,5 +1,7 @@
 # **[Plugin](http://docs.vagrantup.com/v2/plugins/index.html)** that adds **[Clear Linux](https://clearlinux.org)** *guest* support to **[Vagrant](http://www.vagrantup.com/)**
 
+[![Gem Version](https://badge.fury.io/rb/vagrant-guests-clearlinux.svg)](https://badge.fury.io/rb/vagrant-guests-clearlinux)
+
 > Once it gets feature complete and rock solid, and time and resources permit, work will start in
 > order to get this plugin merged into **[upstream](https://github.com/hashicorp/vagrant)**.
 
