@@ -35,7 +35,7 @@ module VagrantPlugins
               color = type == :stdout ? :green : :red
 
               data = data.chomp
-              return if data.empty?
+              break if data.empty?
 
               options = {}
               options[:color] = color
@@ -43,6 +43,9 @@ module VagrantPlugins
               @machine.ui.detail(data.chomp, options)
             end
           end
+          # XXX: to avoid (!) ...
+          # 'Error: cannot acquire lock file. Another swupd process is already running (possibly auto-update).'
+          sleep 2
         end
       end
     end
@@ -57,7 +60,7 @@ module VagrantPlugins
               color = type == :stdout ? :green : :red
 
               data = data.chomp
-              return if data.empty?
+              break if data.empty?
 
               options = {}
               options[:color] = color
@@ -65,6 +68,7 @@ module VagrantPlugins
               @machine.ui.detail(data.chomp, options)
             end
           end
+          sleep 2
         end
       end
 
