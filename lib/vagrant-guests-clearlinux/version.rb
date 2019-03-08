@@ -4,6 +4,6 @@
 module VagrantPlugins
   # Set version for vagrant-guests-clearlinux gem.
   module GuestClearLinux
-    VERSION = '1.1.1'
+    VERSION = '1.1.2'
   end
 end
