@@ -19,33 +19,25 @@ module VagrantPlugins
       end
       def bundles=(bundles)
         if bundles.kind_of?(Array)
-          @bundles = Array.new(bundles)
+          @bundles = bundles.join(" ")
         else
-           @bundles = [ bundles ]
+           @bundles = bundles
         end
       end
     end
 
     class BundleAddProvisioner < Vagrant.plugin('2', :provisioner)
       def provision
-        @config.bundles.each do | item |
-          @machine.ui.detail("installing '#{item}' bundle")
-          @machine.communicate.sudo("swupd bundle-add '#{item}'") do |type, data|
-            if [:stderr, :stdout].include?(type)
-              color = type == :stdout ? :green : :red
+        @machine.ui.detail("installing the following bundle(s): '#{@config.bundles}'")
+        @machine.communicate.sudo("swupd bundle-add #{@config.bundles}") do |type, data|
+          if [:stderr, :stdout].include?(type)
+            color = type == :stdout ? :green : :red
 
-              data = data.chomp
-              break if data.empty?
+            options = {}
+            options[:color] = color
 
-              options = {}
-              options[:color] = color
-
-              @machine.ui.detail(data.chomp, options)
-            end
+            @machine.ui.detail(data.chomp, options)
           end
-          # XXX: to avoid (!) ...
-          # 'Error: cannot acquire lock file. Another swupd process is already running (possibly auto-update).'
-          sleep 2
         end
       end
     end
@@ -53,25 +45,19 @@ module VagrantPlugins
     class BundleRemoveProvisioner < Vagrant.plugin('2', :provisioner)
 
       def provision
-        @config.bundles.each do | item |
-          @machine.ui.detail("removing '#{item}' bundle")
-          @machine.communicate.sudo("swupd bundle-remove '#{item}'") do |type, data|
-            if [:stderr, :stdout].include?(type)
-              color = type == :stdout ? :green : :red
+        @machine.ui.detail("removing the following bundle(s): '#{@config.bundles}'")
+        @machine.communicate.sudo("swupd bundle-remove #{@config.bundles}") do |type, data|
+          if [:stderr, :stdout].include?(type)
+            color = type == :stdout ? :green : :red
 
-              data = data.chomp
-              break if data.empty?
+            options = {}
+            options[:color] = color
 
-              options = {}
-              options[:color] = color
-
-              @machine.ui.detail(data.chomp, options)
-            end
+            @machine.ui.detail(data.chomp, options)
           end
-          sleep 2
         end
       end
-
     end
+
   end
 end
