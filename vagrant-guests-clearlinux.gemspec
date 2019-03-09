@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Copyright (c) 2018 António Meireles. All Rights Reserved.
+# Copyright (c) 2018-2019 António Meireles. All Rights Reserved.
 $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 require 'vagrant-guests-clearlinux/version'
 
@@ -20,6 +20,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-expectations', '~> 3.5.0'
   s.add_development_dependency 'rspec-mocks', '~> 3.5.0'
   s.add_development_dependency 'rubocop'
+
+  s.add_dependency 'tzinfo'
+  s.add_dependency 'tzinfo-data'
 
   s.files = `git ls-files`.split($RS)
   s.executables = s.files.grep(/^bin/) { |f| File.basename(f) }

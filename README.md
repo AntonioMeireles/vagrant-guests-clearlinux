@@ -11,31 +11,44 @@ Currently the plugin exposes the following *guest*
 - **[NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html)**
 
 Beyond adding proper **[Clear Linux](https://clearlinux.org)** *guest* support to **Vagrant** this
-plugin also comes bundled with a simple
-**[provisioner](https://www.vagrantup.com/docs/provisioning/)** in order to enable basic
+plugin also comes bundled two additional **[provisioners](https://www.vagrantup.com/docs/provisioning/)**:
+
+- a simple **[provisioner](https://www.vagrantup.com/docs/provisioning/)** that
+  enable basics
 **[swupd](https://clearlinux.org/documentation/clear-linux/guides/maintenance/swupd-guide)**
 operations straight from the `Vagrantfile`:
 
-- adding one or more **[bundles](https://clearlinux.org/documentation/clear-linux/reference/bundles)**
+  - adding one or more **[bundles](https://clearlinux.org/documentation/clear-linux/reference/bundles)**
+
+    ```ruby
+    config.vm.provision :bundle_add, bundles: 'wireshark'
+    # alternatively ... functionally equivalent to above
+    # config.vm.provision :bundle_add do |p|
+    #  p.bundles = 'wireshark'
+    # end
+    ```
+
+  - removing one or more **[bundles](https://clearlinux.org/documentation/clear-linux/reference/bundles)**
+
+    ```ruby
+    # assuming it was installed already ...
+    config.vm.provision :bundle_remove, bundles: [ 'wireshark', 'nmap' ]
+    # alternatively ... functionally equivalent to above
+    # config.vm.provision :bundle_remove do |p|
+    #  p.bundles = ['wireshark', 'nmap']
+    # end
+    ```
+
+- a provisioner to set the desired [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+
+  Given that the available ClearLinux boxes ship with a default timezone set unlikely
+  to suit everyone (Author's one `Portugal` *aka* `Europe/Lisbon`) here's how to programatically your own straight from the `Vagrantfile`:
 
   ```ruby
-  config.vm.provision :bundle_add, bundles: 'wireshark'
-  # alternatively ... functionally equivalent to above
-  # config.vm.provision :bundle_add do |p|
-  #  p.bundles = 'wireshark'
-  # end
+  config.vm.provision :set_timezone, timezone: 'Asia/Dili'
   ```
 
-- removing one or more **[bundles](https://clearlinux.org/documentation/clear-linux/reference/bundles)**
-
-  ```ruby
-  # assuming it was installed already ...
-  config.vm.provision :bundle_remove, bundles: [ 'wireshark', 'nmap' ]
-  # alternatively ... functionally equivalent to above
-  # config.vm.provision :bundle_remove do |p|
-  #  p.bundles = ['wireshark', 'nmap']
-  # end
-  ```
+  > `Vagrant` loading will abort if the provided timezone is invalid
 
 ## Compatible Vagrant boxes
 

@@ -17,6 +17,10 @@ module VagrantPlugins
         require_relative 'provisioner'
         BundlesConfig
       end
+      config(:set_timezone, :provisioner) do
+        require_relative 'provisioner'
+        TimezoneConfig
+      end
 
       provisioner(:bundle_add) do
         require_relative 'provisioner'
@@ -28,6 +32,10 @@ module VagrantPlugins
         BundleRemoveProvisioner
       end
 
+      provisioner(:set_timezone) do
+        require_relative 'provisioner'
+        TimezoneProvisioner
+      end
       guest('clearlinux', 'linux') do
         require_relative 'guest'
         Guest
