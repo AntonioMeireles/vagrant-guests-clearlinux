@@ -14,6 +14,10 @@ module VagrantPlugins
             "systemctl start rpcbind"
           ].join("\n"))
         end
+
+        def self.nfs_pre(machine)
+          machine.communicate.sudo('systemctl start rpcbind')
+        end
       end
     end
   end
