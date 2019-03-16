@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 module VagrantPlugins
@@ -9,13 +8,13 @@ module VagrantPlugins
           machine.communicate.tap do |comm|
             unless comm.test("hostnamectl --static | grep '#{name}'")
               comm.sudo([
-                "rm /etc/machine-id",
-                "systemd-machine-id-setup",
+                'rm /etc/machine-id',
+                'systemd-machine-id-setup',
                 "hostnamectl set-hostname --static '#{name}'",
                 "hostnamectl set-hostname --transient '#{name}'",
-                "hostnamectl set-hostname --set-chassis vm",
-                "systemctl restart systemd-networkd.service"
-                ].join("\n"))
+                'hostnamectl set-hostname --set-chassis vm',
+                'systemctl restart systemd-networkd.service'
+              ].join("\n"))
             end
           end
         end

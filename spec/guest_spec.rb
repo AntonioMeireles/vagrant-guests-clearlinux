@@ -1,5 +1,4 @@
-# encoding: UTF-8
-# CCopyright (c) 2018 António Meireles. All Rights Reserved.
+# Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 require 'spec_helper'
 require 'vagrant-guests-clearlinux/guest'

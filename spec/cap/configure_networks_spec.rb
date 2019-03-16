@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 require 'vagrant-guests-ClearLinux/cap/configure_networks'
@@ -21,9 +20,9 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
       # config.vm.network :private_network, type: "dhcp"
       {
         :type => :dhcp,
-        :adapter_ip => "172.28.128.1",
-        :ip => "172.28.128.1",
-        :netmask => "255.255.255.0",
+        :adapter_ip => '172.28.128.1',
+        :ip => '172.28.128.1',
+        :netmask => '255.255.255.0',
         :auto_config => true,
         :interface => 2
       },
@@ -36,10 +35,10 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
       },
       # config.vm.network :public_network, bridge: "en0: Wi-Fi (AirPort)", ip: "192.168.1.201"
       {
-        :type=>:static,
-        :bridge => "en0: Wi-Fi (AirPort)",
-        :ip => "192.168.1.201",
-        :netmask => "255.255.255.0",
+        :type => :static,
+        :bridge => 'en0: Wi-Fi (AirPort)',
+        :ip => '192.168.1.201',
+        :netmask => '255.255.255.0',
         :use_dhcp_assigned_default_route => false,
         :auto_config => true,
         :interface => 4
@@ -50,7 +49,7 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
 
     before do
       communicate.stub(:sudo).with("ifconfig -a | grep -E '^enp|^eth' | cut -f1 -d' '")
-        .and_yield(nil, interfaces)
+                 .and_yield(nil, interfaces)
     end
 
     it 'should configure networks' do
@@ -58,65 +57,65 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
 
       # enp0s8
       communicate.should_receive(:sudo).with("grep enp0s8 /etc/systemd/network/* | awk -F: '{print $1}' | head -n1")
-      communicate.should_receive(:sudo).with("rm -f /etc/systemd/network/50-vagrant-enp0s8.network")
+      communicate.should_receive(:sudo).with('rm -f /etc/systemd/network/50-vagrant-enp0s8.network')
       communicate.should_receive(:upload) do |src, dst|
-        contents = (File.readlines src).join("")
+        contents = (File.readlines src).join('')
         contents.should eq "[Match]\nName=enp0s8\n\n[Network]\nAddress=192.168.10.10/24\n"
-        dst.should eq "/tmp/50-vagrant-enp0s8.network"
+        dst.should eq '/tmp/50-vagrant-enp0s8.network'
       end
       communicate.should_receive(:sudo)
-        .with("mv /tmp/50-vagrant-enp0s8.network /etc/systemd/network/")
+                 .with('mv /tmp/50-vagrant-enp0s8.network /etc/systemd/network/')
       communicate.should_receive(:sudo)
-        .with("chown root:root /etc/systemd/network/50-vagrant-enp0s8.network")
+                 .with('chown root:root /etc/systemd/network/50-vagrant-enp0s8.network')
       communicate.should_receive(:sudo)
-        .with("chmod a+r /etc/systemd/network/50-vagrant-enp0s8.network")
+                 .with('chmod a+r /etc/systemd/network/50-vagrant-enp0s8.network')
 
       # eth2
       communicate.should_receive(:sudo).with("grep eth2 /etc/systemd/network/* | awk -F: '{print $1}' | head -n1")
-      communicate.should_receive(:sudo).with("rm -f /etc/systemd/network/50-vagrant-eth2.network")
+      communicate.should_receive(:sudo).with('rm -f /etc/systemd/network/50-vagrant-eth2.network')
       communicate.should_receive(:upload) do |src, dst|
-        contents = (File.readlines src).join("")
+        contents = (File.readlines src).join('')
         contents.should eq "[Match]\nName=eth2\n\n[Network]\nDHCP=yes\n"
-        dst.should eq "/tmp/50-vagrant-eth2.network"
+        dst.should eq '/tmp/50-vagrant-eth2.network'
       end
       communicate.should_receive(:sudo)
-        .with("mv /tmp/50-vagrant-eth2.network /etc/systemd/network/")
+                 .with('mv /tmp/50-vagrant-eth2.network /etc/systemd/network/')
       communicate.should_receive(:sudo)
-        .with("chown root:root /etc/systemd/network/50-vagrant-eth2.network")
+                 .with('chown root:root /etc/systemd/network/50-vagrant-eth2.network')
       communicate.should_receive(:sudo)
-        .with("chmod a+r /etc/systemd/network/50-vagrant-eth2.network")
+                 .with('chmod a+r /etc/systemd/network/50-vagrant-eth2.network')
 
       # enp1s5
       communicate.should_receive(:sudo).with("grep enp1s5 /etc/systemd/network/* | awk -F: '{print $1}' | head -n1")
-      communicate.should_receive(:sudo).with("rm -f /etc/systemd/network/50-vagrant-enp1s5.network")
+      communicate.should_receive(:sudo).with('rm -f /etc/systemd/network/50-vagrant-enp1s5.network')
       communicate.should_receive(:upload) do |src, dst|
-        contents = (File.readlines src).join("")
+        contents = (File.readlines src).join('')
         contents.should eq "[Match]\nName=enp1s5\n\n[Network]\nDHCP=yes\n"
-        dst.should eq "/tmp/50-vagrant-enp1s5.network"
+        dst.should eq '/tmp/50-vagrant-enp1s5.network'
       end
       communicate.should_receive(:sudo)
-        .with("mv /tmp/50-vagrant-enp1s5.network /etc/systemd/network/")
+                 .with('mv /tmp/50-vagrant-enp1s5.network /etc/systemd/network/')
       communicate.should_receive(:sudo)
-        .with("chown root:root /etc/systemd/network/50-vagrant-enp1s5.network")
+                 .with('chown root:root /etc/systemd/network/50-vagrant-enp1s5.network')
       communicate.should_receive(:sudo)
-        .with("chmod a+r /etc/systemd/network/50-vagrant-enp1s5.network")
+                 .with('chmod a+r /etc/systemd/network/50-vagrant-enp1s5.network')
 
       # enp1s6
       communicate.should_receive(:sudo).with("grep enp1s6 /etc/systemd/network/* | awk -F: '{print $1}' | head -n1")
-      communicate.should_receive(:sudo).with("rm -f /etc/systemd/network/50-vagrant-enp1s6.network")
+      communicate.should_receive(:sudo).with('rm -f /etc/systemd/network/50-vagrant-enp1s6.network')
       communicate.should_receive(:upload) do |src, dst|
-        contents = (File.readlines src).join("")
+        contents = (File.readlines src).join('')
         contents.should eq "[Match]\nName=enp1s6\n\n[Network]\nAddress=192.168.1.201/24\n"
-        dst.should eq "/tmp/50-vagrant-enp1s6.network"
+        dst.should eq '/tmp/50-vagrant-enp1s6.network'
       end
       communicate.should_receive(:sudo)
-        .with("mv /tmp/50-vagrant-enp1s6.network /etc/systemd/network/")
+                 .with('mv /tmp/50-vagrant-enp1s6.network /etc/systemd/network/')
       communicate.should_receive(:sudo)
-        .with("chown root:root /etc/systemd/network/50-vagrant-enp1s6.network")
+                 .with('chown root:root /etc/systemd/network/50-vagrant-enp1s6.network')
       communicate.should_receive(:sudo)
-        .with("chmod a+r /etc/systemd/network/50-vagrant-enp1s6.network")
+                 .with('chmod a+r /etc/systemd/network/50-vagrant-enp1s6.network')
 
-      communicate.should_receive(:sudo).with("systemctl restart systemd-networkd.service")
+      communicate.should_receive(:sudo).with('systemctl restart systemd-networkd.service')
 
       described_class.configure_networks(machine, networks)
     end
@@ -136,9 +135,9 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
       # config.vm.network :private_network, type: "dhcp"
       {
         :type => :dhcp,
-        :adapter_ip => "172.28.128.1",
-        :ip => "172.28.128.1",
-        :netmask => "255.255.255.0",
+        :adapter_ip => '172.28.128.1',
+        :ip => '172.28.128.1',
+        :netmask => '255.255.255.0',
         :auto_config => true,
         :interface => 2
       }
@@ -148,36 +147,36 @@ describe VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks do
 
     before do
       communicate.stub(:sudo).with("ifconfig -a | grep -E '^enp|^eth' | cut -f1 -d' '")
-        .and_yield(nil, interfaces)
-      @@logger = Log4r::Logger.new("vagrant::guest::clearlinux::configure_networks")
+                 .and_yield(nil, interfaces)
+      @@logger = Log4r::Logger.new('vagrant::guest::clearlinux::configure_networks')
     end
 
     it 'should configure networks without enp0s9' do
       communicate.should_receive(:sudo).with("ifconfig -a | grep -E '^enp|^eth' | cut -f1 -d' '")
       communicate.should_receive(:sudo).with("grep enp0s8 /etc/systemd/network/* | awk -F: '{print $1}' | head -n1")
-      communicate.should_receive(:sudo).with("rm -f /etc/systemd/network/50-vagrant-enp0s8.network")
+      communicate.should_receive(:sudo).with('rm -f /etc/systemd/network/50-vagrant-enp0s8.network')
 
       # enp0s8
       communicate.should_receive(:upload) do |src, dst|
-        contents = (File.readlines src).join("")
+        contents = (File.readlines src).join('')
         contents.should eq "[Match]\nName=enp0s8\n\n[Network]\nAddress=192.168.10.10/24\n"
-        dst.should eq "/tmp/50-vagrant-enp0s8.network"
+        dst.should eq '/tmp/50-vagrant-enp0s8.network'
       end
       communicate.should_receive(:sudo)
-        .with("mv /tmp/50-vagrant-enp0s8.network /etc/systemd/network/")
+                 .with('mv /tmp/50-vagrant-enp0s8.network /etc/systemd/network/')
       communicate.should_receive(:sudo)
-        .with("chown root:root /etc/systemd/network/50-vagrant-enp0s8.network")
+                 .with('chown root:root /etc/systemd/network/50-vagrant-enp0s8.network')
       communicate.should_receive(:sudo)
-        .with("chmod a+r /etc/systemd/network/50-vagrant-enp0s8.network")
+                 .with('chmod a+r /etc/systemd/network/50-vagrant-enp0s8.network')
 
       # eth2
       @@logger.should_receive(:warn).with(
-        "Could not find match rule for network " +
-        "{:type=>:dhcp, :adapter_ip=>\"172.28.128.1\", :ip=>\"172.28.128.1\", " +
-        ":netmask=>\"255.255.255.0\", :auto_config=>true, :interface=>2}"
+        'Could not find match rule for network ' \
+        '{:type=>:dhcp, :adapter_ip=>"172.28.128.1", :ip=>"172.28.128.1", ' \
+        ':netmask=>"255.255.255.0", :auto_config=>true, :interface=>2}'
       )
 
-      communicate.should_receive(:sudo).with("systemctl restart systemd-networkd.service")
+      communicate.should_receive(:sudo).with('systemctl restart systemd-networkd.service')
 
       described_class.configure_networks(machine, networks)
     end

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 require 'tempfile'
@@ -30,7 +29,7 @@ module VagrantPlugins
       class ConfigureNetworks
         include Vagrant::Util
         extend Vagrant::Util::GuestInspection::Linux
-        NETWORKD_DIRECTORY = "/etc/systemd/network".freeze
+        NETWORKD_DIRECTORY = '/etc/systemd/network'.freeze
         @@logger = Log4r::Logger.new('vagrant::guest::clearlinux::configure_networks')
 
         def self.configure_networks(machine, networks)
@@ -43,16 +42,16 @@ module VagrantPlugins
               @@logger.warn("Could not find match rule for network #{network.inspect}")
               next
             end
-            unit_name = format('50-vagrant-%s.network', device)
+            unit_name = format('50-vagrant-%<device>s.network', device: device)
 
             if network[:type] == :static
-              leased = "no"
+              leased = 'no'
               cidr = IPAddr.new(network[:netmask]).to_cidr
               body = "Address=#{network[:ip]}/#{cidr}"
               body += "\nGateway=#{network[:gateway]}" if network[:gateway]
             elsif network[:type] == :dhcp
-              leased = "yes"
-              body = ""
+              leased = 'yes'
+              body = ''
             end
 
             unit_file = format(VAGRANT_NETWORK, device, leased, body)
@@ -62,12 +61,14 @@ module VagrantPlugins
             temp.close
 
             comm.upload(temp.path, "/tmp/#{unit_name}")
-            comm.sudo([ "mkdir -p #{NETWORKD_DIRECTORY}",
+            comm.sudo([
+              "mkdir -p #{NETWORKD_DIRECTORY}",
               "rm -f #{NETWORKD_DIRECTORY}/#{unit_name}",
               "mv /tmp/#{unit_name} #{NETWORKD_DIRECTORY}",
               "chown root:root #{NETWORKD_DIRECTORY}/#{unit_name}",
               "chmod a+r #{NETWORKD_DIRECTORY}/#{unit_name}",
-              "systemctl restart systemd-networkd"].join("\n"))
+              'systemctl restart systemd-networkd'
+            ].join(' && '))
             comm.wait_for_ready(30)
           end
         end

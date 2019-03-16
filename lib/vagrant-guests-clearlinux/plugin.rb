@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 require 'vagrant'
@@ -61,13 +60,18 @@ module VagrantPlugins
         Cap::NFS
       end
 
+      guest_capability('clearlinux', 'nfs_pre') do
+        require_relative 'cap/nfs_client'
+        Cap::NFS
+      end
+
       guest_capability(:clearlinux, :rsync_install) do
-        require_relative "cap/rsync"
+        require_relative 'cap/rsync'
         Cap::RSync
       end
 
       guest_capability(:clearlinux, :rsync_installed) do
-        require_relative "cap/rsync"
+        require_relative 'cap/rsync'
         Cap::RSync
       end
     end

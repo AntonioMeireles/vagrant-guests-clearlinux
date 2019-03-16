@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2018 António Meireles. All Rights Reserved.
 
 require 'spec_helper'
@@ -12,8 +11,8 @@ describe VagrantPlugins::GuestClearLinux::Plugin do
   end
 
   {
-    :change_host_name      => VagrantPlugins::GuestClearLinux::Cap::ChangeHostName,
-    :configure_networks    => VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks
+    :change_host_name => VagrantPlugins::GuestClearLinux::Cap::ChangeHostName,
+    :configure_networks => VagrantPlugins::GuestClearLinux::Cap::ConfigureNetworks
   }.each do |cap, cls|
     it "should be capable of #{cap} with ClearLinux" do
       expect(described_class.components.guest_capabilities[:clearlinux][cap]).to eq(cls)

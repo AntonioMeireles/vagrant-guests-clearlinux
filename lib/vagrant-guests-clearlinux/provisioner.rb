@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2019 António Meireles. All Rights Reserved.
 
 require 'vagrant'
@@ -6,9 +5,8 @@ require 'tzinfo'
 
 module VagrantPlugins
   module GuestClearLinux
-
     class BundlesConfig < Vagrant.plugin('2', :config)
-      attr_accessor :bundles
+      attr_reader :bundles
 
       def initialize
         super
@@ -18,12 +16,13 @@ module VagrantPlugins
       def finalize!
         @bundles = [] if @bundles == UNSET_VALUE
       end
+
       def bundles=(bundles)
-        if bundles.kind_of?(Array)
-          @bundles = bundles.join(" ")
-        else
-           @bundles = bundles
-        end
+        @bundles = if bundles.is_a?(Array)
+                     bundles.join(' ')
+                   else
+                     bundles
+                   end
       end
     end
 
@@ -40,19 +39,15 @@ module VagrantPlugins
         @timezone = '' if @timezone == UNSET_VALUE
       end
 
-      def validate(machine)
+      def validate(_machine)
         errors = _detected_errors
 
         TZInfo::Timezone.get(timezone)
-        { "vm.provision.set_timezone:" => errors }
+        { 'vm.provision.set_timezone:' => errors }
       rescue TZInfo::InvalidTimezoneIdentifier
-        errors <<  "Invalid (user provided) timezone: '#{timezone}', Aborting!"
+        errors << "Invalid (user provided) timezone: '#{timezone}', Aborting!"
 
-        { "vm.provision.set_timezone:" => errors }
-      end
-
-      def timezone=(timezone)
-        @timezone = timezone
+        { 'vm.provision.set_timezone:' => errors }
       end
     end
 
@@ -60,7 +55,7 @@ module VagrantPlugins
       def provision
         @machine.ui.detail("setting (user provided) timezone to '#{@config.timezone}'")
         @machine.communicate.sudo("timedatectl set-timezone #{@config.timezone}") do |type, data|
-          if [:stderr, :stdout].include?(type)
+          if %i[stderr stdout].include?(type)
             color = type == :stdout ? :green : :red
 
             options = {}
@@ -76,7 +71,7 @@ module VagrantPlugins
       def provision
         @machine.ui.detail("installing the following bundle(s): '#{@config.bundles}'")
         @machine.communicate.sudo("swupd bundle-add #{@config.bundles}") do |type, data|
-          if [:stderr, :stdout].include?(type)
+          if %i[stderr stdout].include?(type)
             color = type == :stdout ? :green : :red
 
             options = {}
@@ -89,11 +84,10 @@ module VagrantPlugins
     end
 
     class BundleRemoveProvisioner < Vagrant.plugin('2', :provisioner)
-
       def provision
         @machine.ui.detail("removing the following bundle(s): '#{@config.bundles}'")
         @machine.communicate.sudo("swupd bundle-remove #{@config.bundles}") do |type, data|
-          if [:stderr, :stdout].include?(type)
+          if %i[stderr stdout].include?(type)
             color = type == :stdout ? :green : :red
 
             options = {}
@@ -104,6 +98,5 @@ module VagrantPlugins
         end
       end
     end
-
   end
 end

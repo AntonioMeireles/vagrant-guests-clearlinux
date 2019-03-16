@@ -3,7 +3,7 @@ module VagrantPlugins
     module Cap
       class NFS
         def self.nfs_client_installed(machine)
-          machine.communicate.test("test -x /usr/bin/mount.nfs")
+          machine.communicate.test('test -x /usr/bin/mount.nfs')
         end
 
         def self.nfs_client_install(machine)

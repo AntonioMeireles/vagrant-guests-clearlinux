@@ -1,6 +1,5 @@
-# encoding: UTF-8
 # Copyright (c) 2018-2019 António Meireles. All Rights Reserved.
-$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('lib', __dir__)
 require 'vagrant-guests-clearlinux/version'
 
 Gem::Specification.new do |s|
