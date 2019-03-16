@@ -9,9 +9,9 @@ module VagrantPlugins
         def self.nfs_client_install(machine)
           comm = machine.communicate
           comm.sudo([
-            "swupd bundle-add storage-utils",
-            "systemctl enable rpcbind",
-            "systemctl start rpcbind"
+            'swupd bundle-add nfs-utils',
+            'systemctl enable rpcbind',
+            'systemctl start rpcbind'
           ].join("\n"))
         end
 
