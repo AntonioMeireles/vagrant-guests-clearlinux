@@ -9,10 +9,11 @@ module VagrantPlugins
         def self.nfs_client_install(machine)
           comm = machine.communicate
           comm.sudo([
+            # XXX: understand root cause
+            'curl -Lsk https://cdn.download.clearlinux.org/update/',
             'swupd bundle-add nfs-utils',
-            'systemctl enable rpcbind',
-            'systemctl start rpcbind'
-          ].join("\n"))
+            'systemctl enable rpcbind --now'
+          ].join(' && '))
         end
 
         def self.nfs_pre(machine)
