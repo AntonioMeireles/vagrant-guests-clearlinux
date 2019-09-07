@@ -6,7 +6,7 @@ module VagrantPlugins
   module GuestClearLinux
     class Guest < Vagrant.plugin('2', :guest)
       def detect?(machine)
-        machine.communicate.test("cat /usr/lib/os-release | grep 'ID=clear-linux-os'")
+        machine.communicate.test("cat /usr/lib/os-release | grep 'ID_LIKE=clear-linux-os'")
       end
     end
   end
