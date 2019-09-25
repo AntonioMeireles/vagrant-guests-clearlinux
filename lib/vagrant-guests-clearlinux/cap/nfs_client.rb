@@ -10,12 +10,17 @@ module VagrantPlugins
           comm = machine.communicate
           comm.sudo([
             'swupd bundle-add nfs-utils',
-            'systemctl enable rpcbind --now'
+            'systemctl enable rpcbind --now',
+            'systemctl enable nfs-client.target --now'
           ].join(' && '))
         end
 
         def self.nfs_pre(machine)
-          machine.communicate.sudo('systemctl start rpcbind')
+          comm = machine.communicate
+          comm.sudo([
+            'systemctl start rpcbind',
+            'systemctl start nfs-client.target'
+          ].join(' && '))
         end
       end
     end
